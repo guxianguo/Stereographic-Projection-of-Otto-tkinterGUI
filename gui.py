@@ -15,10 +15,10 @@ class ImageProcessingGUI:
             'w_proj': 800,
             'h_proj': 600,
             'offset_hor': 0.0,
-            'offset_ver': 0.5,
+            'offset_ver': 0.0,
             'scale': 1.2,
-            'alpha': -5.0,
-            'beta': -5.0,
+            'alpha': 0.0,
+            'beta': 0.0,
             'gamma': 0.0
         }
         
@@ -214,10 +214,10 @@ class ImageProcessingGUI:
         self.w_proj_var.set(800)
         self.h_proj_var.set(600)
         self.offset_hor_var.set(0.0)
-        self.offset_ver_var.set(0.5)
+        self.offset_ver_var.set(0.0)
         self.scale_var.set(1.2)
-        self.alpha_var.set(-5.0)
-        self.beta_var.set(-5.0)
+        self.alpha_var.set(0.0)
+        self.beta_var.set(0.0)
         self.gamma_var.set(0.0)
     
     def preview_image(self):
