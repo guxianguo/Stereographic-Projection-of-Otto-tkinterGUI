@@ -180,7 +180,7 @@ class ImageProcessingGUI:
         self.canvas_frame = ttk.Frame(right_frame)
         self.canvas_frame.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
         
-        self.canvas = tk.Canvas(self.canvas_frame, bg='white', width=400, height=300)
+        self.canvas = tk.Canvas(self.canvas_frame, bg='white', width=600, height=300)
         v_scrollbar = ttk.Scrollbar(self.canvas_frame, orient=tk.VERTICAL, command=self.canvas.yview)
         h_scrollbar = ttk.Scrollbar(self.canvas_frame, orient=tk.HORIZONTAL, command=self.canvas.xview)
         self.canvas.configure(yscrollcommand=v_scrollbar.set, xscrollcommand=h_scrollbar.set)
@@ -259,13 +259,13 @@ class ImageProcessingGUI:
             result_img :Image.Image= getimage(self.path_img, "/tmp/preview.png", **params)
             # Resize image to fit display area (max 400x300 for preview)
             p = self.skq_var.get()
-            result_img = result_img.resize((int(result_img.height*p),result_img.width))
+            result_img = result_img.resize((int(result_img.width*p),result_img.height))
             
             img_width, img_height = result_img.size
-            max_width, max_height =  600,450
+            max_width = 600
             
             # Calculate scaling factor to fit within max dimensions while maintaining aspect ratio
-            scale_factor = min(max_width / img_width, max_height / img_height, 1.0)
+            scale_factor = min(max_width / img_width, max_width / img_height, 1.0)
             new_width = int(img_width * scale_factor)
             new_height = int(img_height * scale_factor)
             

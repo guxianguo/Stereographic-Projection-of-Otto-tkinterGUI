@@ -125,9 +125,14 @@ def projection(
 def getimage(PATH_IMG,PATH_PROJ,w_proj = 800,h_proj=600,offset_hor = 0,offset_ver = 0.5,scale=1.2,alpha=-5,beta=-5,gamma =0)->Image:
     path_img = os.path.join(os.path.abspath(os.path.dirname(__file__)), PATH_IMG)
     path_proj = os.path.join(os.path.abspath(os.path.dirname(__file__)), PATH_PROJ)
+    
+    alpha = alpha * pi / 180
+    beta = beta * pi / 180
+    gamma = gamma * pi / 180
 
     arr_img = array(Image.open(path_img))
     arr_proj = zeros((h_proj, w_proj, 3), dtype=uint8)
+    
 
     h_img = arr_img.shape[0]
     w_img = arr_img.shape[1]
