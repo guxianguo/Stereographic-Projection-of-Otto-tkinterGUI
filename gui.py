@@ -22,6 +22,8 @@ class ImageProcessingGUI:
             'gamma': 0.0
         }
         
+        self.skq = 1.0
+        
         # File paths
         self.path_img = ""
         self.path_proj = ""
@@ -153,6 +155,14 @@ class ImageProcessingGUI:
         gamma_entry.grid(row=row, column=2, padx=5, pady=2)
         row += 1
         
+        ttk.Label(params_frame, text="拉伸图片(高与宽的比例):").grid(row=row, column=0, sticky=tk.W, padx=5, pady=2)
+        self.skq_var = tk.DoubleVar(value=self.skq)
+        skq_scale = ttk.Scale(params_frame, from_=0.1, to=10, variable=self.skq_var, orient='horizontal', command=self.update_params)
+        skq_scale.grid(row=row, column=1, padx=5, pady=2, sticky=(tk.W, tk.E))
+        skq_entry = ttk.Entry(params_frame, textvariable=self.skq_var, width=10)
+        skq_entry.grid(row=row, column=2, padx=5, pady=2)
+        row += 1
+        
         # Buttons
         button_frame = ttk.Frame(left_frame)
         button_frame.grid(row=2, column=0, columnspan=2, pady=10)
@@ -219,6 +229,7 @@ class ImageProcessingGUI:
         self.alpha_var.set(0.0)
         self.beta_var.set(0.0)
         self.gamma_var.set(0.0)
+        self.skq_var.set(1.0)
     
     def preview_image(self):
         # Validate image path
@@ -245,10 +256,13 @@ class ImageProcessingGUI:
         # Call the getimage function with current parameters (using temp path for preview)
         try:
             # Use a temporary path for preview
-            result_img = getimage(self.path_img, "/tmp/preview.png", **params)
+            result_img :Image.Image= getimage(self.path_img, "/tmp/preview.png", **params)
             # Resize image to fit display area (max 400x300 for preview)
+            p = self.skq_var.get()
+            result_img = result_img.resize((int(result_img.height*p),result_img.width))
+            
             img_width, img_height = result_img.size
-            max_width, max_height = 400, 300
+            max_width, max_height =  600,450
             
             # Calculate scaling factor to fit within max dimensions while maintaining aspect ratio
             scale_factor = min(max_width / img_width, max_height / img_height, 1.0)
@@ -272,6 +286,7 @@ class ImageProcessingGUI:
             messagebox.showerror("Error", f"An error occurred while generating preview:\n{str(e)}")
     
     def process_image(self):
+        self.path_proj = self.proj_path_var.get()
         # Validate file paths
         if not self.path_img or not self.path_proj:
             messagebox.showerror("Error", "Please select both image path and projection path")
@@ -295,12 +310,15 @@ class ImageProcessingGUI:
         
         # Call the getimage function with current parameters
         try:
-            result_img:Image = getimage(self.path_img, self.path_proj, **params)
+            result_img:Image.Image = getimage(self.path_img, self.path_proj, **params)
+            p = self.skq_var.get()
+            result_img = result_img.resize((int(result_img.height*p),result_img.width))
             result_img.save(self.path_proj)
             # Show success message
             messagebox.showinfo("Success", f"Image processed and saved to:\n{self.path_proj}")
             
         except Exception as e:
+            raise
             messagebox.showerror("Error", f"An error occurred while processing the image:\n{str(e)}")
 
 if __name__ == "__main__":
