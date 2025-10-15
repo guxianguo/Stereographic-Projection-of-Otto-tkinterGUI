@@ -312,7 +312,7 @@ class ImageProcessingGUI:
         try:
             result_img:Image.Image = getimage(self.path_img, self.path_proj, **params)
             p = self.skq_var.get()
-            result_img = result_img.resize((int(result_img.height*p),result_img.width))
+            result_img = result_img.resize((int(result_img.width*p),result_img.height))
             result_img.save(self.path_proj)
             # Show success message
             messagebox.showinfo("Success", f"Image processed and saved to:\n{self.path_proj}")
